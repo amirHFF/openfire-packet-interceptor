@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <class>io.projectZ.eventListener.plugin.ListenerPlugin</class>
+    <name>openfire-event-listener-plugin</name>
+    <description>event listener and message syncer</description>
+    <author>amirHF</author>
+    <version>1.0.0</version>
+    <minServerVersion>4.7.0</minServerVersion>
+</plugin>
