@@ -7,7 +7,7 @@ package io.projectZ.eventListener.kafka.dto;
 
 import org.xmpp.packet.Message;
 
-public class DirectMessage extends KafkaMessage {
+public class DirectMessage extends ConversationalMessage {
     private String messageId;
     private String conversationId;
     private String sender;

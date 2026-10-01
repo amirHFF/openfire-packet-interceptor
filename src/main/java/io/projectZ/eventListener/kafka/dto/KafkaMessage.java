@@ -7,15 +7,16 @@ package io.projectZ.eventListener.kafka.dto;
 
 import org.xmpp.packet.Message;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public abstract class KafkaMessage {
+public abstract class KafkaMessage implements Serializable {
 
     private String consumerGroupIdentifier;
     private String id;
     private Message.Type type;
     private long timestamp;
-    private String body;
+    private byte[] rawPayload;
 
 
     public KafkaMessage() {
@@ -55,12 +56,13 @@ public abstract class KafkaMessage {
         this.timestamp = timestamp;
     }
 
-    public String getBody() {
-        return body;
+
+    public byte[] getRawPayload() {
+        return rawPayload;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setRawPayload(byte[] rawPayload) {
+        this.rawPayload = rawPayload;
     }
 }
 
