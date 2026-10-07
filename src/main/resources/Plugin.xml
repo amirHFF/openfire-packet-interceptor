@@ -4,6 +4,6 @@
     <name>openfire-event-listener-plugin</name>
     <description>event listener and message syncer</description>
     <author>amirHF</author>
-    <version>1.0.0</version>
+    <version>0.1.2</version>
     <minServerVersion>4.7.0</minServerVersion>
 </plugin>

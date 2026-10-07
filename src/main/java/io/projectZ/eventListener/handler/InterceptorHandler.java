@@ -73,7 +73,7 @@ public class InterceptorHandler implements EventHandler<InterceptorHandlerDTO> {
         p2pMessage.setRawPayload(message.getBody().getBytes());
         p2pMessage.setSender(message.getFrom().getNode());
         p2pMessage.setReceiver(message.getTo().getNode());
-        p2pMessage.setConversationId(DirectMessage.getConversationID(p2pMessage.getReceiver(), p2pMessage.getSender()));
+        p2pMessage.setConversationId(Hashing.hash(p2pMessage.getReceiver() , p2pMessage.getSender()));
 
         return p2pMessage;
     }

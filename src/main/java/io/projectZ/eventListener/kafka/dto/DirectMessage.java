@@ -50,9 +50,7 @@ public class DirectMessage extends ConversationalMessage {
         this.receiver = receiver;
     }
 
-    public static String getConversationID(String receiver , String sender){
-        return receiver.concat("-").concat(sender);
-    }
+
 
     @Override
     public String toString() {
