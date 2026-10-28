@@ -10,6 +10,7 @@ import io.projectZ.eventListener.kafka.KafkaMessageProducer;
 import io.projectZ.eventListener.kafka.dto.DirectMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.Element;
 import org.xmpp.packet.Message;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -21,6 +22,9 @@ public class InterceptorHandler implements EventHandler<InterceptorHandlerDTO> {
     private final KafkaMessageProducer producer;
     private ThreadPoolExecutor executor;
     private final String topicName = "message-archive";
+    public static final String ELEMENT = "zchat";
+    public static final String NAMESPACE = "urn:zchat:message";
+
 
     public InterceptorHandler(KafkaMessageProducer producer , ThreadPoolExecutor threadPoolExecutor) {
         this.producer = producer;
@@ -61,7 +65,17 @@ public class InterceptorHandler implements EventHandler<InterceptorHandlerDTO> {
             throw new IllegalArgumentException("incoming interceptor dto is null");
         }
 
+        String conversationHash = null;
         Message message = interceptorHandlerDTO.message();
+       try {
+           Element zchat = message.getChildElement("zchat", "urn:zchat:message");
+           if (zchat != null) {
+               conversationHash = zchat.elementText("hash");
+           }
+       }catch (Exception e){
+           logger.error("getting hash from message elements caused error : ", e);
+       }
+
         if (message == null) {
             logger.error("incoming message is null");
             throw new IllegalArgumentException("incoming message is null");
@@ -73,7 +87,8 @@ public class InterceptorHandler implements EventHandler<InterceptorHandlerDTO> {
         p2pMessage.setRawPayload(message.getBody().getBytes());
         p2pMessage.setSender(message.getFrom().getNode());
         p2pMessage.setReceiver(message.getTo().getNode());
-        p2pMessage.setConversationId(Hashing.hash(p2pMessage.getReceiver() , p2pMessage.getSender()));
+        p2pMessage.setConversationId((conversationHash != null) ? conversationHash :
+                Hashing.hash(p2pMessage.getReceiver() , p2pMessage.getSender()));
 
         return p2pMessage;
     }
